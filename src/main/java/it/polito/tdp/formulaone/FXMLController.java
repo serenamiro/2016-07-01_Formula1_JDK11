@@ -10,7 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-//controller del turno B --> switchare al branch master_turnoA o master_turnoC per turno A o C
+//controller del turno C --> switchare al branch master_turnoA o master_turnoB per turno A o B
 
 public class FXMLController {
 	
@@ -23,7 +23,7 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ComboBox<?> boxCircuiti;
+    private ComboBox<?> boxCostruttori;
 
     @FXML
     private TextField textInputK;
@@ -43,7 +43,7 @@ public class FXMLController {
 
     @FXML
     void initialize() {
-        assert boxCircuiti != null : "fx:id=\"boxCircuiti\" was not injected: check your FXML file 'FormulaOne.fxml'.";
+        assert boxCostruttori != null : "fx:id=\"boxCostruttori\" was not injected: check your FXML file 'FormulaOne.fxml'.";
         assert textInputK != null : "fx:id=\"textInputK\" was not injected: check your FXML file 'FormulaOne.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'FormulaOne.fxml'.";
 
