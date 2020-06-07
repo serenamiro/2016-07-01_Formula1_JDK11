@@ -10,20 +10,20 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-//controller del turno A --> switchare al branch master_turnoB o master_turnoC per turno B o C
+//controller del turno B --> switchare al branch master_turnoA o master_turnoC per turno A o C
 
 public class FXMLController {
 	
 	private Model model;
 
-    @FXML
+	@FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
 
     @FXML
-    private ComboBox<?> boxAnno;
+    private ComboBox<?> boxCircuiti;
 
     @FXML
     private TextField textInputK;
@@ -43,12 +43,12 @@ public class FXMLController {
 
     @FXML
     void initialize() {
-        assert boxAnno != null : "fx:id=\"boxAnno\" was not injected: check your FXML file 'FormulaOne.fxml'.";
+        assert boxCircuiti != null : "fx:id=\"boxCircuiti\" was not injected: check your FXML file 'FormulaOne.fxml'.";
         assert textInputK != null : "fx:id=\"textInputK\" was not injected: check your FXML file 'FormulaOne.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'FormulaOne.fxml'.";
 
     }
-
+    
 	public void setModel(Model model) {
 		this.model = model;
 	}

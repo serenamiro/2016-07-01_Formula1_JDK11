@@ -13,24 +13,24 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polito.tdp.formulaone.FXMLController">
    <top>
-      <Label text="Formula 1 (Esame 01/07/2016 _Tema_A)" BorderPane.alignment="CENTER" />
+      <Label text="Formula 1 (Esame 01/07/2016 _Tema_B)" BorderPane.alignment="CENTER" />
    </top>
    <center>
       <VBox maxHeight="1.7976931348623157E308" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="43.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="43.0" prefWidth="548.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Anno:">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Circuito:">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Text>
-                  <ComboBox fx:id="boxAnno" prefWidth="150.0" promptText="Anno">
+                  <ComboBox fx:id="boxCircuiti" prefWidth="220.0" promptText="Circuiti">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <Button mnemonicParsing="false" onAction="#doCreaGrafo" text="Vittorie piloti">
+                  <Button mnemonicParsing="false" onAction="#doCreaGrafo" text="Vittorie costruttori">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
