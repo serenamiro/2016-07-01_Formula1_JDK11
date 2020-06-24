@@ -6,10 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import it.polito.tdp.formulaone.model.Adiacenza;
 import it.polito.tdp.formulaone.model.Circuit;
 import it.polito.tdp.formulaone.model.Constructor;
+import it.polito.tdp.formulaone.model.Driver;
 import it.polito.tdp.formulaone.model.Season;
 
 
@@ -17,7 +21,7 @@ public class FormulaOneDAO {
 
 	public List<Integer> getAllYearsOfRace() {
 		
-		String sql = "SELECT year FROM races ORDER BY year" ;
+		String sql = "SELECT distinct year FROM races ORDER BY year" ;
 		
 		try {
 			Connection conn = DBConnect.getConnection() ;
@@ -52,7 +56,7 @@ public class FormulaOneDAO {
 			
 			List<Season> list = new ArrayList<>() ;
 			while(rs.next()) {
-				list.add(new Season(Year.of(rs.getInt("year")), rs.getString("url"))) ;
+				list.add(new Season(rs.getInt("year"), rs.getString("url"))) ;
 			}
 			
 			conn.close();
@@ -112,7 +116,64 @@ public class FormulaOneDAO {
 		}
 	}
 
+	public Map<Integer, Driver> getPilotiByAnno(Season sea){
+		String sql = "SELECT DISTINCT d.driverId as id, d.forename as fore, d.surname as sur " + 
+				"FROM drivers d, results res, races r " + 
+				"WHERE r.raceId=res.raceId AND res.driverId=d.driverId AND r.year=? AND res.position<>0 ";
+		
+		Map<Integer, Driver> list = new HashMap<>();
+		try {
+			Connection conn = DBConnect.getConnection();
 
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, sea.getYear());
+
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				Driver d = new Driver(rs.getInt("id"), rs.getString("fore"), rs.getString("sur"));
+				list.put(d.getDriverId(), d);
+			}
+
+			conn.close();
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("SQL Query Error");
+		}
+		
+	}
+	
+	public List<Adiacenza> getAdiacenze(Season sea, Map<Integer, Driver> mappa){
+		String sql = "SELECT DISTINCT res1.driverId AS id1, res2.driverId AS id2, COUNT(*) AS peso " + 
+				"FROM results res1, results res2, races r " + 
+				"WHERE r.raceId=res1.raceId AND res1.raceId=res2.raceId " + 
+				"		AND r.year=? AND res1.position>res2.position " + 
+				"GROUP BY res1.driverId, res2.driverId";
+		
+		List<Adiacenza> list = new ArrayList<>();
+		try {
+			Connection conn = DBConnect.getConnection();
+
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, sea.getYear());
+
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+				Driver d1 = mappa.get(rs.getInt("id1"));
+				Driver d2 = mappa.get(rs.getInt("id2"));
+				Adiacenza a = new Adiacenza(d1, d2, rs.getInt("peso"));
+				list.add(a);
+			}
+
+			conn.close();
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("SQL Query Error");
+		}
+	}
 	
 }
 

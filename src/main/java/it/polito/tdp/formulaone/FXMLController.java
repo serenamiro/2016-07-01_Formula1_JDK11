@@ -1,9 +1,12 @@
 package it.polito.tdp.formulaone;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.formulaone.model.Driver;
 import it.polito.tdp.formulaone.model.Model;
+import it.polito.tdp.formulaone.model.Season;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -23,7 +26,7 @@ public class FXMLController {
     private URL location;
 
     @FXML
-    private ComboBox<?> boxAnno;
+    private ComboBox<Season> boxAnno;
 
     @FXML
     private TextField textInputK;
@@ -33,12 +36,52 @@ public class FXMLController {
 
     @FXML
     void doCreaGrafo(ActionEvent event) {
-
+    	txtResult.clear();
+    	try {
+        	Season sea = boxAnno.getValue();
+        	if(sea == null) {
+        		txtResult.appendText("Selezionare una stagione per proseguire.\n");
+        		return;
+        	}
+        	model.creaGrafo(sea);
+        	txtResult.appendText("GRAFO CREATO\n");
+    		txtResult.appendText("vertici: "+model.nVertici()+"\n");
+    		txtResult.appendText("archi: "+model.nArchi()+"\n");
+    		
+    		txtResult.appendText("MIGLIOR PILOTA: "+model.getMigliorPilota());
+    	} catch(RuntimeException e) {
+    		e.printStackTrace();
+    		System.out.println("Errore di connessione al DB.\n");
+    	}
+    	
     }
 
     @FXML
     void doTrovaDreamTeam(ActionEvent event) {
-
+    	txtResult.clear();
+    	try {
+        	Season sea = boxAnno.getValue();
+        	if(sea == null) {
+        		txtResult.appendText("Selezionare una stagione per proseguire.\n");
+        		return;
+        	}
+        	try {
+        		int k = Integer.parseInt(textInputK.getText());
+        		if(k<=0) {
+        			txtResult.setText("Inserire k >= 0.\n");
+        			return;
+        		}
+        		List<Driver> drivers = model.getDreamTeam(k);
+        		txtResult.setText(drivers.toString());
+        	} catch(NumberFormatException e) {
+        		txtResult.setText("Inserire k >= 0.\n");
+        		return;
+        	}
+    	} catch(RuntimeException e) {
+    		e.printStackTrace();
+    		System.out.println("Errore di connessione al DB.\n");
+    	}
+    	
     }
 
     @FXML
@@ -51,5 +94,6 @@ public class FXMLController {
 
 	public void setModel(Model model) {
 		this.model = model;
+		boxAnno.getItems().addAll(model.getSeasons());
 	}
 }
