@@ -120,9 +120,14 @@ public class Model {
 
 	private int evaluate(ArrayList<Driver> tempDreamTeam) {
 		int sum = 0;
-		Set<Driver> tempDreamTeamSet = new HashSet<>(tempDreamTeam);
+		
+		Set<Driver> in = new HashSet<>(tempDreamTeam);
+		Set<Driver> out = new HashSet<>(grafo.vertexSet());
+		out.removeAll(in);
+		// OUT = tutti i vertici - dream team = vertici che non stanno nel dream team
+		
 		for(DefaultWeightedEdge e : grafo.edgeSet()) {
-			if(tempDreamTeamSet.contains(grafo.getEdgeTarget(e))) {
+			if(out.contains(grafo.getEdgeSource(e)) && in.contains(grafo.getEdgeTarget(e))) {
 				sum += grafo.getEdgeWeight(e);
 			}
 		}
